@@ -1,7 +1,8 @@
 export const handleDownload = (
   index: number,
   scale: number,
-  images: string[]
+  images: string[],
+  custom: string
 ) => {
   const svgUrl = images[index];
 
@@ -18,8 +19,13 @@ export const handleDownload = (
     const context = canvas.getContext("2d");
     if (context) {
       // Set canvas dimensions to match the image
-      canvas.width = img.width * scale;
-      canvas.height = img.height * scale;
+      if (custom != "" && parseInt(custom) > 0) {
+        canvas.width = img.width * parseInt(custom);
+        canvas.height = img.height * parseInt(custom);
+      } else {
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+      }
 
       // Draw the SVG image onto the canvas
       context.drawImage(img, 0, 0, canvas.width, canvas.height);

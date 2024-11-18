@@ -8,7 +8,8 @@ import DropBox from "./(tools)/dropBox";
 const MultiFileInput = () => {
   const [images, setImages] = useState<string[]>([]);
   const [close, setClose] = useState<boolean>(true);
-  const [scale, setScale] = useState<number>(1);    
+  const [scale, setScale] = useState<number>(1);
+  const [custom, setCustom] = useState<string>("");
   const SCALE = [1, 2, 4, 8, 16, 32, 64];
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +20,7 @@ const MultiFileInput = () => {
     setImages((prevImages) => [...prevImages, ...imageUrls]);
     // setClose(false);
   };
-  
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen gap-y-4">
       <label
@@ -28,9 +29,7 @@ const MultiFileInput = () => {
       >
         Upload multiple files
       </label>
-      <DropBox
-        setImages={setImages}
-      >
+      <DropBox setImages={setImages}>
         <label className="border rounded-md bg-background px-3 py-2 ring-offset-background cursor-pointer hover:bg-foreground hover:text-background">
           <span>Upload SVG`s</span>
           <input
@@ -80,7 +79,9 @@ const MultiFileInput = () => {
                   {images.map((image, index) => (
                     <button
                       key={index}
-                      onClick={() => handleDownload(index, scale, images)}
+                      onClick={() =>
+                        handleDownload(index, scale, images, custom)
+                      }
                       className="hover:-translate-y-1 hover:scale-105 transition-all"
                     >
                       <Image src={image} width={100} height={100} alt="asda" />
@@ -88,18 +89,33 @@ const MultiFileInput = () => {
                   ))}
                 </div>
               </div>
-              <div className="space-x-4 flex justify-center items-center my-2">
+              <div className="space-x-1 flex justify-center items-center my-2 flex-wrap">
                 {SCALE.map((num) => (
-                  <button
-                    className={`${
-                      scale === num ? "text-gray-50" : "text-gray-500"
-                    } text-xl p-2`}
+                  <button                    
+                    className={`text-gray-500 text-md p-1 hover:text-gray-400 focus:text-gray-50`}
                     key={num}
                     onClick={() => setScale(num)}
                   >
-                    {num}
+                    {num}×
                   </button>
                 ))}
+
+                <input
+                  type="number"
+                  className="w-24 ring-offset-background focus:text-gray-50 rounded-md text-gray-500 text-md px-1 py-1 bg-transparent"
+                  placeholder="CUSTOM"
+                  min={0}
+                  max={100}
+                  value={custom}
+                  onChange={(e) => {
+                    const n = parseInt(e.target.value);
+                    setCustom(
+                      Number.isNaN(n)
+                        ? ""
+                        : Math.min(100, Math.max(1, n)).toString()
+                    );
+                  }}
+                ></input>
               </div>
             </div>
           </div>
