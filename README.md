@@ -6,8 +6,9 @@ A simple sng to png file converter supporting multiple svg file conversion and s
 
 - [x] Multiple File
 - [x] Basic Scaling
+- [x] Drag and Drop
+- [ ] Optimize Code
 - [ ] Custom Scaling
-- [ ] Drag and Drop
 - [ ] Download All Option
 
 ## Getting Started
